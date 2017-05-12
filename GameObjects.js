@@ -2,7 +2,8 @@
 
 class Monster {
 
-    constructor(kind, level) {
+    constructor(position, kind, level) {
+        this.position = position;
         this.kind = kind;
         this.level = level;
         this.life = this.getMaxLife();
@@ -12,19 +13,20 @@ class Monster {
     getMaxLife() {
 
     }
-    
-    getAtkValue(){
+
+    getAtkValue() {
 
     }
 
-    getDefValue(){
+    getDefValue() {
 
     }
 }
 
 class Role {
 
-    constructor() {
+    constructor(position) {
+        this.position = position;
         this.level = 1;
         this.exp = 0;
         this.weapon = 1;
@@ -43,12 +45,12 @@ class Role {
 
     }
 
-    getAtkValue(){
+    getAtkValue() {
 
     }
 
-    getDefValue(){
+    getDefValue() {
 
     }
-    
+
 }

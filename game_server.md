@@ -10,7 +10,7 @@
 
     遊戲資料
 
-## Game Loop
+## [Game Loop]
 
 ### Monster Born
 
@@ -36,7 +36,7 @@
 
     商人消失
 
-## Player API
+## [Player API]
 
 ### Register Account
 

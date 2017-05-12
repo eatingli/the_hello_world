@@ -1,6 +1,6 @@
 # The Hello World
 
-## Rule
+## [Rule]
 
 ### Position
 
@@ -10,7 +10,15 @@
 
     戰鬥為雙方互打一回合，打敗怪物給予經驗、金幣、成就，死亡時降等、外圍復活。
 
-## Monster
+### Achievement
+
+    遊戲中得到各種成就，每種成就都有特殊的影響，例如角色能力加乘，特殊能力解鎖等等......。
+
+### Trader
+
+    商人會在遊戲世界中隨機出現，並且分為普通、高級、神秘，各自販售不同等級的裝備和特殊商品，玩家可以刷新商店物品，並決定是否購買。
+
+## [Monster]
 
 ### Kind
 
@@ -30,7 +38,9 @@
 
     打敗怪物獲得的金錢是由怪物等級決定的，且有一定範圍。
 
-## Player Attribute
+
+
+## [Player Attribute]
 
 ### Level
 
@@ -64,15 +74,8 @@
 
     成就
 
-### HelloBuff
 
-    HelloBuff
-
-### Super HelloBuff
-
-    Super HelloBuff
-
-## Player Action
+## [Player Action]
 
 ### Move
 
