@@ -53,19 +53,7 @@ const MONSTER_LIFE_REGAIN_BATTLE = 0.01;
 //     KIND7: 7,
 // }
 
-// 怪物清單: 平衡 高攻 高防 破防 連擊 反射
-const MONSTER_LIST = [
-    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 5, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
-    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 5, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
-    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 5, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
-    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 4, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
-    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 4, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
-    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 3, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
-];
 
-// 怪物數量
-// 上限
-// 個別
 
 // 成就清單
 const ACHIEVEMENT_LIST = [
@@ -84,14 +72,24 @@ const ACHIEVEMENT_PARAM = {
 //     TRADER_MYSTERY: 3,
 // }
 
-// NPC清單
+// MONSTER_LIST
+const MONSTER_LIST = [
+    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 5, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
+    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 5, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
+    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 5, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
+    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 4, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
+    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 4, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
+    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 3, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
+];
+
+// NPC_LIST
 const NPC_LIST = [
     { name: '普通商人', maxAmount: 5, emergeDuration: 2500, interval: 2500 },
     { name: '高級商人', maxAmount: 4, emergeDuration: 2500, interval: 2500 },
     { name: '神秘商人', maxAmount: 3, emergeDuration: 2500, interval: 2500 },
 ]
 
-// NPC數量，個別，上限...
+// ITEM_LIST
 const ITEM_LIST = [
     { name: '一個金幣', maxAmount: 5, interval: 1500 },
     { name: '一把金幣', maxAmount: 4, interval: 2000 },

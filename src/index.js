@@ -1,6 +1,19 @@
 
-import { MONSTER_LIST, NPC_LIST, ITEM_LIST } from './GameConstants.js'
+/**
+ *  # To-Do:
+ *  - 針對 Npc 實體 產生Timer，時間到消失 (或針對Npc消失機制產生Timer，時間到統一)
+ *  - 針對 Role Monster實體的恢復產生Countr (或針對恢復機制產生Timer，時間到統一恢復)
+ *  - 其他地方可能會需要Counter的參照，例如玩家控制的狀況...，該如何提供？
+ *  - 設計一個介面，讓Web Server可以操作
+ *  - Interface的疑問，多型？
+ *  - 設計Game Helper
+ */
+
+import { MONSTER_LIST, NPC_LIST, ITEM_LIST } from './GameConfig.js'
+import {GameHelper, GameInstance} from './GameHelper.js'
 import { GameCounterManager, CounterInterface } from './GameCounter.js'
+
+const gcm = new GameCounterManager();
 
 // Data
 const GameData = {
@@ -11,36 +24,15 @@ const GameData = {
 }
 
 const GameCounter = {
-    monsters: [],
-    npcs: [],
-    items: [],
+    monsterAdd: [],
+    npcAdd: [],
+    itemAdd: [],
 }
 
 const GameTimer = {
-    monsterBorn: [],
     monsterRegain: 0,
     roleRegain: 0,
-    npcEmerge: [],
-    itemEmerge: [],
 }
-
-// init
-for (var i = 0; i < MONSTER_LIST.length; i++) {
-    GameCounter.monsters[i] = 0;
-    GameTimer.monsterBorn[i] = 0;
-}
-
-for (var i = 0; i < NPC_LIST.length; i++) {
-    GameCounter.npcs[i] = 0;
-    GameTimer.npcEmerge[i] = 0;
-}
-
-for (var i = 0; i < ITEM_LIST.length; i++) {
-    GameCounter.items[i] = 0;
-    GameTimer.itemEmerge[i] = 0;
-}
-
-const gcm = new GameCounterManager();
 
 function setup() {
 
@@ -54,9 +46,11 @@ function setup() {
             // Generate Monster
             // Append to GameData
             // View Event
+            console.log('Add Monster! Kind:', i, ' Count:', counter.count);
         });
         counter.onArrive(() => { });
         gcm.register(counter);
+        GameCounter.monsterAdd.push(counter);
     }
 
     // 建立 Npc Emerge Counter
@@ -67,9 +61,11 @@ function setup() {
             // Generate Npc
             // Append to GameData
             // View Event
+            console.log('Add Npc! Kind:', i, ' Count:', counter.count);
         });
         counter.onArrive(() => { });
         gcm.register(counter);
+        GameCounter.npcAdd.push(counter);
     }
 
     // 建立 Item Emerge Counter
@@ -80,16 +76,12 @@ function setup() {
             // Generate Item
             // Append to GameData
             // View Event
-            console.log('Add!');
+            console.log('Add Item! Kind:', i, ' Count:', counter.count);
         });
-        counter.onArrive(() => { 
-            console.log('arrived!');
-        });
+        counter.onArrive(() => { });
         gcm.register(counter);
+        GameCounter.itemAdd.push(counter);
     }
-
-    // 針對 Npc 實體 產生Timer，時間到消失 (或針對Npc消失機制產生Timer，時間到統一)
-    // 針對 Role Monster實體的恢復產生Countr (或針對恢復機制產生Timer，時間到統一恢復)
 }
 
 function loop() {
@@ -98,20 +90,49 @@ function loop() {
     let nowTime = new Date().getTime();
     // console.log(nowTime);
 
-    gcm.loop(nowTime);
-
-    // console.log(GameCounter);
-    // console.log(GameTimer);
-
     // Update helper timer
 
+    // GameCounterManager
+    gcm.loop(nowTime);
+
+    // Npc Vanish Timer
+    for (let index in GameData.npcs) {
+        let npc = GameData.npcs[index];
+        if (nowTime >= npc.vanishTime) {
+            console.log('Npc Vanish');
+            // decrease Count
+            // Remove from GameData
+            // View Event
+        }
+    }
+
+    // Role Regain Timer
+    if (nowTime >= GameTimer.roleRegain) {
+        for (let index in GameData.roles) {
+            let role = GameData.roles[index];
+            console.log('Role Regain');
+            // GameHelper: Role Regain
+            //Update Timer
+            GameTimer.roleRegain = nowTime + 999;
+        }
+    }
+
+    // Monster Regain Timer
+    if (nowTime >= GameTimer.monsterRegain) {
+        for (let index in GameData.roles) {
+            let role = GameData.roles[index];
+            console.log('Role Regain');
+            // GameHelper: Role Regain
+            //Update Timer
+            GameTimer.monsterRegain = nowTime + 999;
+        }
+    }
 
 
-
-    // gameLoop(nowTime);
 
     setImmediate(loop);
 }
+
 
 setup();
 loop();

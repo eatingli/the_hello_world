@@ -1,5 +1,4 @@
 
-
 /**
  * 追蹤計數數量，使數量趨向達標
  * 
@@ -28,12 +27,12 @@ class GameCounterManager {
 
                 if (counter.trigger == 0) {
                     // Update Trigger
-                    counter.setTrigger(nowTime + counter.delay);
+                    counter.setTrigger(nowTime + counter.interval);
 
                 } else if (nowTime >= counter.trigger) {
                     // Call _onAdd
                     counter._onAdd();
-                    
+
                     // Check if now arrive
                     if (counter.count == counter.target) {
                         // From not arrive to now arrive, call _onArrive
@@ -43,7 +42,7 @@ class GameCounterManager {
 
                     } else {
                         // Still not arrive, Update Trigger
-                        counter.setTrigger(nowTime + counter.delay);
+                        counter.setTrigger(nowTime + counter.interval);
                     }
                 }
             }
@@ -54,10 +53,10 @@ class GameCounterManager {
 
 class CounterInterface {
 
-    constructor(target, delay) {
+    constructor(target, interval) {
         this.count = 0;
         this.target = target;
-        this.delay = delay;
+        this.interval = interval;
         this.trigger = 0;
         this._onAdd = () => { };
         this._onArrive = () => { };
@@ -76,7 +75,7 @@ class CounterInterface {
     }
 
     setDelay(num) {
-        this.delay = num;
+        this.interval = num;
     }
 
     setTrigger(time) {
