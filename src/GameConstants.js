@@ -55,12 +55,12 @@ const MONSTER_LIFE_REGAIN_BATTLE = 0.01;
 
 // 怪物清單: 平衡 高攻 高防 破防 連擊 反射
 const MONSTER_LIST = [
-    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 5, bornDelay: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
-    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 5, bornDelay: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
-    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 5, bornDelay: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
-    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 4, bornDelay: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
-    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 4, bornDelay: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
-    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 3, bornDelay: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
+    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 5, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
+    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 5, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
+    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 5, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
+    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 4, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
+    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 4, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
+    { name: '平衡', level: 0, maxLife: 0, atk: 0, money: 0, maxAmount: 3, interval: 3000, bornPosition: { x: 0, y: 0 }, ability: [] },
 ];
 
 // 怪物數量

@@ -1,7 +1,7 @@
 
 
 /**
- * 計數物件數量，有缺則補
+ * 追蹤計數數量，使數量趨向達標
  * 
  */
 
@@ -21,36 +21,43 @@ class GameCounterManager {
 
 
     loop(nowTime) {
-        for (let counter in this.counters) {
+        this.counters.forEach((counter) => {
 
-            let isNotArrived = counter.count < counter.target;
+            // Check if count does not arrive
+            if (counter.count != counter.target) {
 
-            if (isNotArrived && nowTime >= counter.trigger) {
-
-                // _onAdd
-                counter._onAdd();
-
-                // Check if now arrive
-                if (isNotArrived && counter.count == counter.target) {
-                    // From not arrive to now arrive, call _onArrive
-                    counter._onArrive();
-                } else {
-                    // Still not arrive, Update Tigger
+                if (counter.trigger == 0) {
+                    // Update Trigger
                     counter.setTrigger(nowTime + counter.delay);
-                }
 
+                } else if (nowTime >= counter.trigger) {
+                    // Call _onAdd
+                    counter._onAdd();
+                    
+                    // Check if now arrive
+                    if (counter.count == counter.target) {
+                        // From not arrive to now arrive, call _onArrive
+                        counter._onArrive();
+                        // Clear Trigger
+                        counter.setTrigger(0);
+
+                    } else {
+                        // Still not arrive, Update Trigger
+                        counter.setTrigger(nowTime + counter.delay);
+                    }
+                }
             }
-        }
+        });
     }
 }
 
 
 class CounterInterface {
 
-    constructor() {
+    constructor(target, delay) {
         this.count = 0;
-        this.target = 0;
-        this.delay = 0;
+        this.target = target;
+        this.delay = delay;
         this.trigger = 0;
         this._onAdd = () => { };
         this._onArrive = () => { };
@@ -84,3 +91,5 @@ class CounterInterface {
         this._onArrive = callback
     }
 }
+
+export { GameCounterManager, CounterInterface }
