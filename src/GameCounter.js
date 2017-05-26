@@ -25,11 +25,11 @@ class GameCounterManager {
             // Check if count does not arrive
             if (counter.count != counter.target) {
 
-                if (counter.trigger == 0) {
-                    // Update Trigger
-                    counter.setTrigger(nowTime + counter.interval);
+                if (counter.nextTime == 0) {
+                    // Update NextTime
+                    counter.setNextTime(nowTime + counter.interval);
 
-                } else if (nowTime >= counter.trigger) {
+                } else if (nowTime >= counter.nextTime) {
                     // Call _onAdd
                     counter._onAdd();
 
@@ -37,12 +37,12 @@ class GameCounterManager {
                     if (counter.count == counter.target) {
                         // From not arrive to now arrive, call _onArrive
                         counter._onArrive();
-                        // Clear Trigger
-                        counter.setTrigger(0);
+                        // Clear NextTime
+                        counter.setNextTime(0);
 
                     } else {
-                        // Still not arrive, Update Trigger
-                        counter.setTrigger(nowTime + counter.interval);
+                        // Still not arrive, Update NextTime
+                        counter.setNextTime(nowTime + counter.interval);
                     }
                 }
             }
@@ -57,7 +57,7 @@ class CounterInterface {
         this.count = 0;
         this.target = target;
         this.interval = interval;
-        this.trigger = 0;
+        this.nextTime = 0;
         this._onAdd = () => { };
         this._onArrive = () => { };
     }
@@ -78,8 +78,8 @@ class CounterInterface {
         this.interval = num;
     }
 
-    setTrigger(time) {
-        this.trigger = time;
+    setNextTime(time) {
+        this.nextTime = time;
     }
 
     onAdd(callback) {

@@ -3,17 +3,18 @@
  *  # To-Do:
  *  - 針對 Npc 實體 產生Timer，時間到消失 (或針對Npc消失機制產生Timer，時間到統一)
  *  - 針對 Role Monster實體的恢復產生Countr (或針對恢復機制產生Timer，時間到統一恢復)
- *  - 其他地方可能會需要Counter的參照，例如玩家控制的狀況...，該如何提供？
  *  - 設計一個介面，讓Web Server可以操作
- *  - Interface的疑問，多型？
- *  - 設計Game Helper
  */
 
-import { MONSTER_LIST, NPC_LIST, ITEM_LIST } from './GameConfig.js'
-import {GameHelper, GameInstance} from './GameHelper.js'
+import { GameWorldConfig, RoleConfig, MonsterConfig, NpcConfig, ItemConfig } from './GameConfig.js'
+import { MONSTERS, NPCS, ITEMS } from './GameConfig.js'
+import { GameHelper, GameInstance } from './GameHelper.js'
+import { GameTimerManager, GameTimer } from './GameTimer.js'
 import { GameCounterManager, CounterInterface } from './GameCounter.js'
 
+
 const gcm = new GameCounterManager();
+const gtm = new GameTimerManager();
 
 // Data
 const GameData = {
@@ -23,15 +24,18 @@ const GameData = {
     items: [],
 }
 
-const GameCounter = {
+// Counters
+const GameCounters = {
     monsterAdd: [],
     npcAdd: [],
     itemAdd: [],
 }
 
-const GameTimer = {
-    monsterRegain: 0,
-    roleRegain: 0,
+// Timers
+const GameTimers = {
+    monsterRegain: null,
+    roleRegain: null,
+    npcVanish: [],
 }
 
 function setup() {
@@ -39,49 +43,89 @@ function setup() {
     // 從Constant 抓資料， 建立 Monster, Npc, Item的產生Countr 
 
     // 建立 Monster Born Counter
-    for (let i = 0; i < MONSTER_LIST.length; i++) {
-        let counter = new CounterInterface(MONSTER_LIST[i].maxAmount, MONSTER_LIST[i].interval);
+    for (let i = 0; i < MONSTERS.length; i++) {
+        let counter = new CounterInterface(MONSTERS[i].maxAmount, MONSTERS[i].interval);
         counter.onAdd(() => {
             counter.addCount(1);
             // Generate Monster
             // Append to GameData
             // View Event
-            console.log('Add Monster! Kind:', i, ' Count:', counter.count);
+            console.log('[Counter] Add Monster -', MONSTERS[i].name, ' :', counter.count);
         });
         counter.onArrive(() => { });
         gcm.register(counter);
-        GameCounter.monsterAdd.push(counter);
+        GameCounters.monsterAdd.push(counter);
     }
 
     // 建立 Npc Emerge Counter
-    for (let i = 0; i < NPC_LIST.length; i++) {
-        let counter = new CounterInterface(NPC_LIST[i].maxAmount, NPC_LIST[i].interval);
+    for (let i = 0; i < NPCS.length; i++) {
+        let counter = new CounterInterface(NPCS[i].maxAmount, NPCS[i].interval);
         counter.onAdd(() => {
             counter.addCount(1);
             // Generate Npc
             // Append to GameData
             // View Event
-            console.log('Add Npc! Kind:', i, ' Count:', counter.count);
+            console.log('[Counter] Add Npc - ', NPCS[i].name, ' :', counter.count);
         });
         counter.onArrive(() => { });
         gcm.register(counter);
-        GameCounter.npcAdd.push(counter);
+        GameCounters.npcAdd.push(counter);
     }
 
     // 建立 Item Emerge Counter
-    for (let i = 0; i < ITEM_LIST.length; i++) {
-        let counter = new CounterInterface(ITEM_LIST[i].maxAmount, ITEM_LIST[i].interval);
+    for (let i = 0; i < ITEMS.length; i++) {
+        let counter = new CounterInterface(ITEMS[i].maxAmount, ITEMS[i].interval);
         counter.onAdd(() => {
             counter.addCount(1);
             // Generate Item
             // Append to GameData
             // View Event
-            console.log('Add Item! Kind:', i, ' Count:', counter.count);
+            console.log('[Counter] Add Item - ', ITEMS[i].name, ' :', counter.count);
         });
         counter.onArrive(() => { });
         gcm.register(counter);
-        GameCounter.itemAdd.push(counter);
+        GameCounters.itemAdd.push(counter);
     }
+
+    // Role Regain Timer
+    let roleRegainTimer = new GameTimer(0, 1000);
+    roleRegainTimer.onTime(() => {
+        console.log('[Timer] Role Regain');
+        for (let index in GameData.roles) {
+            let role = GameData.roles[index];
+            // GameHelper: Role Regain
+        }
+    });
+    gtm.register(roleRegainTimer);
+    GameTimers.roleRegain = roleRegainTimer;
+
+    // Monster Regain Timer
+    let monsterRegainTimer = new GameTimer(0, 1000);
+    monsterRegainTimer.onTime(() => {
+        console.log('[Timer] Monster Regain');
+        for (let index in GameData.monsters) {
+            let monster = GameData.monsters[index];
+            // GameHelper: Monsters Regain
+        }
+    });
+    gtm.register(monsterRegainTimer);
+    GameTimers.monsterRegain = monsterRegainTimer;
+
+    // Npc Vanish Timer
+    // let npcVanishTimer = new GameTimer(0, 1000);
+    // npcVanishTimer.onTime(() => {
+    //     console.log('[Timer] Npc Vanish');
+    //     for (let index in GameData.npcs) {
+    //         let npc = GameData.npcs[index];
+    //         if (nowTime >= npc.vanishTime) {
+
+    //             // decrease Count
+    //             // Remove from GameData
+    //             // View Event
+    //         }
+    //     }
+    // });
+
 }
 
 function loop() {
@@ -92,42 +136,11 @@ function loop() {
 
     // Update helper timer
 
-    // GameCounterManager
+    // GameCountersManager Loop
     gcm.loop(nowTime);
 
-    // Npc Vanish Timer
-    for (let index in GameData.npcs) {
-        let npc = GameData.npcs[index];
-        if (nowTime >= npc.vanishTime) {
-            console.log('Npc Vanish');
-            // decrease Count
-            // Remove from GameData
-            // View Event
-        }
-    }
-
-    // Role Regain Timer
-    if (nowTime >= GameTimer.roleRegain) {
-        for (let index in GameData.roles) {
-            let role = GameData.roles[index];
-            console.log('Role Regain');
-            // GameHelper: Role Regain
-            //Update Timer
-            GameTimer.roleRegain = nowTime + 999;
-        }
-    }
-
-    // Monster Regain Timer
-    if (nowTime >= GameTimer.monsterRegain) {
-        for (let index in GameData.roles) {
-            let role = GameData.roles[index];
-            console.log('Role Regain');
-            // GameHelper: Role Regain
-            //Update Timer
-            GameTimer.monsterRegain = nowTime + 999;
-        }
-    }
-
+    // GameTimerManager Loop
+    gtm.loop(nowTime);
 
 
     setImmediate(loop);
